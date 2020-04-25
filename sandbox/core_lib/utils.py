@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 from tabulate import tabulate
-from code.cores.meta import Base
+from .meta import Base
 
 
 def _flatten(flattened, result, key=None):
