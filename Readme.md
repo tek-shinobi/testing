@@ -2,6 +2,14 @@ TESTING
 -----------
 Testbed for building SQLAlchemy queries on a test database.
 
+Installation
+------------
+```python
+pipenv shell
+pipenv install
+python setup.py develop
+```
+
 Restore Northwind database from attached sql
 ---------------------------------------------
 ```lang-sql
