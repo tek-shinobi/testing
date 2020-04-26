@@ -2,41 +2,20 @@ from sqlalchemy import Column, Date, Integer, Numeric, Text
 from sqlalchemy.dialects.postgresql import ARRAY, DATERANGE
 
 from core_lib import meta
+from core_lib import utils
+
+from sqlalchemy import Table, Column, ForeignKey, MetaData
+
+metadata = MetaData()
 
 
-class Record(meta.Base):
-
-    __tablename__ = "records"
-
-    id = Column(Integer, primary_key=True)
-    tags = Column(ARRAY(Text))
-
-
-class DrugInfo(meta.Base):
-
-    __tablename__ = "drug_info"
-
-    id = Column(Text, primary_key=True)
-    validity = Column(DATERANGE, primary_key=True)  # XXX: could be better
-    name = Column(Text)
-    description = Column(Text)
+def reflect_table(table: str) -> Table:
+    """
+    reflect table from existing database schema within database
+    :arg tablename
+    """
+    return Table(table, metadata, autoload=True, autoload_with=meta.engine)
 
 
-class DrugPrice(meta.Base):
-
-    __tablename__ = "drug_prices"
-
-    id = Column(Text, primary_key=True)
-    validity = Column(DATERANGE, primary_key=True)
-    unit_price = Column(Numeric)
-
-
-class Sale(meta.Base):
-
-    __tablename__ = "sales"
-
-    id = Column(Integer, primary_key=True)
-    date = Column(Date)
-    item = Column(Text)
-    amount = Column(Numeric)
-    store_id = Column(Text)
+products = reflect_table("products")
+order_details = reflect_table("order_details")
