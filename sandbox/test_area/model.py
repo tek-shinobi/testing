@@ -19,3 +19,4 @@ def reflect_table(table: str) -> Table:
 
 products = reflect_table("products")
 order_details = reflect_table("order_details")
+orders = reflect_table("orders")

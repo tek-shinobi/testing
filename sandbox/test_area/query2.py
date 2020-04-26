@@ -17,12 +17,10 @@ from core_lib import utils
 from test_area import model
 
 od = model.order_details
-summation = func.sum(
-    od.columns.UnitPrice * od.columns.Quantity * (1 - od.columns.Discount)
-)
+summation = func.sum(od.c.UnitPrice * od.c.Quantity * (1 - od.c.Discount))
 rounding = func.round(cast(summation, Numeric(10, 2)), 2)
 query = (
-    meta.session.query(od.columns.OrderID, rounding.label("total"))
+    meta.session.query(od.c.OrderID, rounding.label("total"))
     .group_by(literal(1))
     .order_by(literal(1))
     .limit(10)
