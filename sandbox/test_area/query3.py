@@ -22,7 +22,7 @@ SELECT ords."ShippedDate", ords."OrderID", cte.total, EXTRACT(YEAR FROM ords."Sh
 """
 
 from sqlalchemy.sql.expression import literal, func
-from sqlalchemy import cast, Numeric, select
+from sqlalchemy import cast, Numeric, extract
 from core_lib import meta
 from core_lib import utils
 
@@ -38,8 +38,17 @@ subtotal_cte = (
     meta.session.query(od.c.OrderID, rounding.label("total")).group_by(literal(1))
 ).cte("subtotal")
 query = (
-    meta.session.query(orders.c.ShippedDate, orders.c.OrderID, subtotal_cte.c.total)
+    meta.session.query(
+        orders.c.ShippedDate,
+        orders.c.OrderID,
+        subtotal_cte.c.total,
+        extract("year", orders.c.ShippedDate).label("year"),
+    )
     .join(subtotal_cte, orders.c.OrderID == subtotal_cte.c.OrderID)
+    .filter(orders.c.ShippedDate >= "1996-12-24")
+    .filter(orders.c.ShippedDate <= "1997-09-30")
+    .filter(orders.c.ShippedDate.isnot(None))
+    .order_by(orders.c.ShippedDate)
     .limit(10)
 )
 utils.print_table(query)
