@@ -23,8 +23,11 @@ def reflect_table(table: str) -> Table:
 # orders = reflect_table("orders")
 
 # reflect all tables at once
+# metadata.reflect(
+#     bind=meta.engine
+# )
 # https://docs.sqlalchemy.org/en/13/core/reflection.html#reflecting-all-tables-at-once
-metadata.reflect(bind=meta.engine)
+metadata.reflect(bind=meta.engine, only=["products", "orders", "order_details"])
 products = metadata.tables["products"]
 orders = metadata.tables["orders"]
 order_details = metadata.tables["order_details"]

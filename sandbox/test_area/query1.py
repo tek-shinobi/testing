@@ -14,3 +14,6 @@ if __name__ == "__main__":
     print("COLUMN NAMES for order_details")
     for column in inspector.get_columns("order_details"):
         pp.pprint(column)
+    print("COLUMN NAMES for orders")
+    for column in inspector.get_columns("orders"):
+        pp.pprint(column)
